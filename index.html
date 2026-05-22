@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unidad 3: PROCESADOR DE TEXTO - Tema 1: Introducción al Procesador de Texto</title>
+    <title>Informática Educativa</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,20 +17,116 @@
 
     <nav class="info-navbar">
         <div class="container">
-            <div class="trimester-tag">
-                <i class="ph-bold ph-calendar-check"></i> SEGUNDO TRIMESTRE
+            <button id="toggle-sidebar" class="sidebar-toggle-btn" aria-label="Toggle Sidebar">
+                <i class="ph-bold ph-list"></i>
+            </button>
+        
+            <div id="dynamic-header-content">
+                <div id="header-teacher-info" class="teacher-info">
+                    <img src="foto-fernando.jpg" alt="Profesor Fernando Herrera" class="teacher-photo">
+                    <span>Docente: <span class="teacher-name">Fernando José Herrera Hernández</span></span>
+                </div>
+    
+                <div id="header-unit-info" class="unit-tag" style="display: none;">
+                    <i class="ph-bold ph-book-bookmark"></i> <span id="unit-text">UNIDAD 2</span>
+                </div>
             </div>
+        
             <div class="subject-title">
                 <i class="ph-bold ph-monitor"></i> INFORMÁTICA EDUCATIVA
-            </div>
-            <div class="teacher-info">
-                <img src="foto-fernando.jpg" alt="Foto del Docente Fernando Herrera" class="teacher-photo">
-                <span>Docente: <span class="teacher-name">Fernando José Herrera Hernández</span></span>
             </div>
         </div>
     </nav>
 
-    <header class="hero">
+    <div class="app-layout">
+    <aside class="sidebar">
+        <div class="sidebar-menu">
+            <button class="nav-item active" data-target="view-inicio">
+                <i class="ph-bold ph-house"></i> Inicio
+            </button>
+            
+        <div class="accordion" id="accordion-sexto">
+    <button class="nav-item accordion-btn">
+        <div class="btn-content">
+            <i class="ph-bold ph-student"></i> Sexto Grado 
+        </div>
+        <i class="ph-bold ph-caret-down caret-icon"></i>
+    </button>
+    
+    <div class="accordion-content">
+        
+        <div class="nested-accordion">
+            <button class="sub-nav-item nested-accordion-btn">
+                <div class="btn-content">
+                    <i class="ph-bold ph-folder"></i> Unidad 1
+                </div>
+                <i class="ph-bold ph-caret-down nested-caret"></i>
+            </button>
+            <div class="nested-accordion-content">
+                <button class="sub-nav-item theme-item" data-target="view-u1-t1">Tema 1</button>
+                <button class="sub-nav-item theme-item" data-target="view-u1-t2">Tema 2</button>
+                <button class="sub-nav-item theme-item" data-target="view-u1-t3">Tema 3</button>
+                <button class="sub-nav-item theme-item" data-target="view-u1-t4">Tema 4</button>
+            </div>
+        </div>
+
+        <div class="nested-accordion">
+            <button class="sub-nav-item nested-accordion-btn">
+                <div class="btn-content">
+                    <i class="ph-bold ph-folder"></i> Unidad 2
+                </div>
+                <i class="ph-bold ph-caret-down nested-caret"></i>
+            </button>
+            <div class="nested-accordion-content">
+                <button class="sub-nav-item theme-item" data-target="view-u2-t1">Tema 1</button>
+                <button class="sub-nav-item theme-item" data-target="view-u2-t2">Tema 2</button>
+                <button class="sub-nav-item theme-item" data-target="view-u2-t3">Tema 3</button>
+                <button class="sub-nav-item theme-item" data-target="view-u2-t4">Tema 4</button>
+            </div>
+        </div>
+
+        <div class="nested-accordion">
+            <button class="sub-nav-item nested-accordion-btn">
+                <div class="btn-content">
+                    <i class="ph-bold ph-folder"></i> Unidad 3
+                </div>
+                <i class="ph-bold ph-caret-down nested-caret"></i>
+            </button>
+            <div class="nested-accordion-content">
+                <button class="sub-nav-item theme-item" data-target="view-u3-t1">Tema 1</button>
+                <button class="sub-nav-item theme-item" data-target="view-u3-t2">Tema 2</button>
+                <button class="sub-nav-item theme-item" data-target="view-u3-t3">Tema 3</button>
+                <button class="sub-nav-item theme-item" data-target="view-u3-t4">Tema 4</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+    </aside>
+
+    <main class="content-area">
+        
+        <section id="view-inicio" class="view-section active">
+            <div class="container reveal">
+                <div class="section-header" style="margin-top: 100px;">
+                    <h2>Bienvenido a la plataforma de <br><span class="highlight">Informática Educativa</span></h2>
+                    <p class="section-subtitle">Selecciona un grado y unidad en el menú lateral para comenzar.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-unidad1" class="view-section">
+            <div class="container reveal">
+                <h2 style="margin-top: 100px;">Contenido de la Unidad 1</h2>
+                <p>Próximamente...</p>
+            </div>
+        </section>
+
+        <section id="view-unidad2" class="view-section">
+            </section>
+
+        <section id="view-u3-t1" class="view-section">
+            <header class="hero">
         <div class="container reveal active">
             <span class="tag">📘 UNIDAD 3: PROCESADOR DE TEXTO</span>
             <div class="topic-number">TEMA 1</div>
@@ -44,9 +140,6 @@
                 Hoy comenzarás a dar tus primeros pasos en esta herramienta que usarás durante toda tu vida escolar… 
                 ¡y más allá!
             </p>
-            <a href="#pasos" class="btn">
-                Comenzar a Aprender <i class="ph-bold ph-arrow-down"></i>
-            </a>
         </div>
     </header>
 
@@ -209,7 +302,264 @@
             <p class="footer-copyright">&copy; 2026 Educación Digital</p>
         </div>
     </footer>
+        </section>
+        <section id="view-u3-t2" class="view-section">
+            <header class="hero">
+                <div class="container reveal">
+                    <span class="tag">📘 UNIDAD 3: PROCESADOR DE TEXTO</span>
+                    <div class="topic-number">TEMA 2</div>
+                    <h1>Formato Básico<br><span class="highlight">de Texto</span></h1>
+                    <p>
+                        <strong>🌟 Dale vida a tus palabras</strong><br>
+                        ¿Alguna vez has visto un cartel bonito o una tarea perfectamente presentada? No solo importa lo que escribes… también cómo se ve. El formato de texto te permite mejorar la apariencia de tus escritos para que sean más claros, organizados y atractivos. Es como pasar de un boceto a lápiz… ¡a un diseño lleno de colores y vida! Hoy aprenderás a dominar las cuatro herramientas clave que transformarán tus documentos.
+                    </p>
+                </div>
+            </header>
 
-    <script src="script.js"></script>
+            <section id="herramientas-formato" style="padding: 20px 0 60px 0;">
+                <div class="container">
+                    <div class="section-header reveal">
+                        <h2 class="highlight-cyan">Herramientas de Estilo</h2>
+                        <p class="section-subtitle">Aprende a personalizar el diseño de tus escritos digitales paso a paso.</p>
+                    </div>
+
+                    <div class="step-grid reveal">
+                        <div class="step-content">
+                            <h3><span class="step-number">1</span> Tipo de letra (Fuente)</h3>
+                            <p class="step-description"><strong>✅ ¿Qué es?</strong> Es el diseño o estilo visual que poseen las letras que utilizas al escribir.</p>
+                            <p class="step-description"><strong>🎯 ¿Por qué es importante?</strong> Facilita la lectura del texto y tiene el poder de transmitir distintas intenciones o emociones (formalidad, diversión o seriedad).</p>
+                            <ul class="step-list">
+                                <li><i class="ph-fill ph-check-circle"></i> Selecciona con el mouse el bloque de texto que deseas modificar.</li>
+                                <li><i class="ph-fill ph-check-circle"></i> Busca la caja desplegable con el nombre de la tipografía actual en la barra superior (ej. Calibri).</li>
+                                <li><i class="ph-fill ph-check-circle"></i> Haz clic en la pequeña flecha y elige la nueva letra de la lista.</li>
+                            </ul>
+                            <div class="tip-box">
+                                <strong>💡 Consejo práctico:</strong> Para tareas escolares y proyectos formales, opta siempre por fuentes limpias y legibles como **Arial** o **Calibri**.
+                            </div>
+                        </div>
+                        
+                        <div class="ui-mockup">
+                            <div class="ui-header ui-header-light">
+                                <div class="ui-toolbar-icons" style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 0.8rem; background: #cbd5e1; padding: 2px 8px; border-radius: 4px; color: #0f172a; font-family: sans-serif; display: flex; align-items: center; gap: 4px;">Arial <i class="ph ph-caret-down"></i></span>
+                                    <i class="ph-bold ph-text-b"></i> <i class="ph-bold ph-text-italic"></i>
+                                </div>
+                            </div>
+                            <div class="ui-body-editor" style="height: 250px; display: flex; align-items: flex-start; justify-content: center; padding-top: 15px;">
+                                <div style="width: 85%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); color: #0f172a; overflow: hidden;">
+                                    <div style="font-size: 0.7rem; color: #64748b; padding: 6px 12px; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; font-weight: bold;">Fuentes tipográficas</div>
+                                    <div style="padding: 8px 12px; font-family: 'Arial', sans-serif; font-size: 0.85rem; background: rgba(59, 130, 246, 0.15); color: #1d4ed8; font-weight: 500;">Arial</div>
+                                    <div style="padding: 8px 12px; font-family: 'Calibri', sans-serif; font-size: 0.85rem; border-top: 1px solid #f1f5f9;">Calibri</div>
+                                    <div style="padding: 8px 12px; font-family: 'Times New Roman', serif; font-size: 0.85rem; border-top: 1px solid #f1f5f9;">Times New Roman</div>
+                                    <div style="padding: 8px 12px; font-family: 'Comic Sans MS', cursive; font-size: 0.85rem; border-top: 1px solid #f1f5f9;">Comic Sans</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-grid reveal step-2-margin">
+                        <div class="step-content">
+                            <h3><span class="step-number">2</span> Tamaño de texto</h3>
+                            <p class="step-description"><strong>✅ ¿Qué es?</strong> Es la escala física o dimensión que adquieren los caracteres en el lienzo digital.</p>
+                            <p class="step-description"><strong>🎯 ¿Por qué es importante?</strong> Te permite destacar títulos principales del resto de la información y crear un orden visual claro.</p>
+                            <ul class="step-list">
+                                <li><i class="ph-fill ph-check-circle"></i> Sombrea o selecciona la porción de texto que vas a ajustar.</li>
+                                <li><i class="ph-fill ph-check-circle"></i> Ubica el cuadro numérico indicador de tamaño en la barra de formato (ej. 12).</li>
+                                <li><i class="ph-fill ph-check-circle"></i> Elige un número mayor para agrandar las letras o uno menor para reducirlas.</li>
+                            </ul>
+                            <div class="tip-box tip-box-blue">
+                                <strong>💡 ¿Sabías que…?</strong> Los títulos en una hoja digital suelen configurarse en tamaños grandes (como 20 o 24 puntos), mientras que los contenidos o párrafos se mantienen en tamaños estándar (11 o 12 puntos).
+                            </div>
+                        </div>
+                        
+                        <div class="ui-mockup">
+                            <div class="ui-header ui-header-light">
+                                <div class="ui-toolbar-icons" style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 0.8rem; background: #cbd5e1; padding: 2px 8px; border-radius: 4px; color: #0f172a; font-family: sans-serif; display: flex; align-items: center; gap: 4px;">24 <i class="ph ph-caret-down"></i></span>
+                                    <i class="ph ph-minus"></i> <i class="ph ph-plus"></i>
+                                </div>
+                            </div>
+                            <div class="ui-body-editor">
+                                <div class="ui-paper" style="display: flex; flex-direction: column; gap: 10px;">
+                                    <p class="ui-paper-title" style="margin-bottom: 0;">Escala de visualización</p>
+                                    <h2 style="font-size: 1.6rem; color: #020617; font-weight: 700; font-family: 'Space Grotesk', sans-serif;">Título Destacado (24)</h2>
+                                    <p style="font-size: 0.9rem; color: #334155; font-family: 'Inter', sans-serif; line-height: 1.4;">Este es un texto explicativo normal configurado con un tamaño equilibrado y óptimo para la lectura fluida (12).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-grid reveal step-3-margin">
+                        <div class="step-content">
+                            <h3><span class="step-number">3</span> Color de texto</h3>
+                            <p class="step-description"><strong>✅ ¿Qué es?</strong> Es el tono cromático aplicado directamente sobre las letras escritas.</p>
+                            <p class="step-description"><strong>🎯 ¿Por qué es importante?</strong> Logra que la presentación sea llamativa y guía al lector para ubicar de inmediato las ideas o palabras clave.</p>
+                            <ul class="step-list">
+                                <li><i class="ph-fill ph-check-circle"></i> Selecciona minuciosamente la palabra o línea que quieres colorear.</li>
+                                <li><i class="ph-fill ph-check-circle"></i> Haz clic en el ícono de color, representado por una letra <strong>"A"</strong> con una franja de color debajo.</li>
+                                <li><i class="ph-fill ph-check-circle"></i> Escoge el color de tu agrado de la paleta desplegable.</li>
+                            </ul>
+                            <div class="tip-box tip-box-yellow">
+                                <strong>⚠️ Advertencia:</strong> No abuses usando demasiados colores en un mismo texto. Esto satura la vista y entorpece la correcta lectura.
+                            </div>
+                        </div>
+                        
+                        <div class="ui-mockup">
+                            <div class="ui-header ui-header-light">
+                                <div class="ui-toolbar-icons" style="display: flex; align-items: center;">
+                                    <span style="font-size: 1.1rem; font-weight: 700; border-bottom: 4px solid #3b82f6; padding: 0 4px; color: #0f172a; line-height: 1; font-family: 'Space Grotesk', sans-serif;">A</span>
+                                </div>
+                            </div>
+                            <div class="ui-body-editor">
+                                <div class="ui-paper" style="display: flex; flex-direction: column; gap: 8px;">
+                                    <p class="ui-paper-title">Muestra de Color</p>
+                                    <p style="font-size: 0.95rem; color: #0f172a; font-family: 'Inter', sans-serif; line-height: 1.5;">
+                                        En mis apuntes digitales, puedo resaltar las palabras <span style="color: #3b82f6; font-weight: 600;">más importantes</span> en azul o colocar notas <span style="color: #10b981; font-weight: 600;">completamente aprobadas</span> en verde.
+                                    </p>
+                                    <div style="display: flex; gap: 6px; margin-top: 10px;">
+                                        <div style="width: 16px; height: 16px; background: #000000; border-radius: 50%;"></div>
+                                        <div style="width: 16px; height: 16px; background: #3b82f6; border-radius: 50%; box-shadow: 0 0 0 2px #ffffff, 0 0 0 3px #3b82f6;"></div>
+                                        <div style="width: 16px; height: 16px; background: #10b981; border-radius: 50%;"></div>
+                                        <div style="width: 16px; height: 16px; background: #ef4444; border-radius: 50%;"></div>
+                                        <div style="width: 16px; height: 16px; background: #f59e0b; border-radius: 50%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-grid reveal" style="margin-top: 100px;">
+                        <div class="step-content">
+                            <h3><span class="step-number">4</span> Alineación de texto</h3>
+                            <p class="step-description"><strong>✅ ¿Qué es?</strong> Es la alineación y distribución del texto con relación a los márgenes laterales de la página.</p>
+                            <p class="step-description"><strong>🎯 Variantes principales:</strong></p>
+                            <ul class="step-list" style="margin-bottom: 20px;">
+                                <li><i class="ph-bold ph-text-align-left" style="color: var(--accent-cyan);"></i> <strong>Izquierda:</strong> Inicia las líneas en el margen izquierdo (alineación estándar).</li>
+                                <li><i class="ph-bold ph-text-align-center" style="color: var(--accent-cyan);"></i> <strong>Centro:</strong> Organiza el texto hacia el medio (ideal para portadas y títulos).</li>
+                                <li><i class="ph-bold ph-text-align-right" style="color: var(--accent-cyan);"></i> <strong>Derecha:</strong> Coloca el texto al margen derecho (útil para fechas o firmas).</li>
+                                <li><i class="ph-bold ph-text-align-justify" style="color: var(--accent-cyan);"></i> <strong>Justificado:</strong> Distribuye el texto uniformemente de borde a borde.</li>
+                            </ul>
+                            <div class="tip-box">
+                                <strong>💡 Regla de diseño:</strong> Configura tus títulos de forma **Centrada** y los cuerpos de texto o desarrollo a la **Izquierda** o **Justificado** para dar un aspecto limpio.
+                            </div>
+                        </div>
+                        
+                        <div class="ui-mockup">
+                            <div class="ui-header ui-header-light">
+                                <div class="ui-toolbar-icons" style="display: flex; gap: 12px; font-size: 1.1rem;">
+                                    <i class="ph ph-text-align-left"></i>
+                                    <i class="ph ph-text-align-center" style="color: #3b82f6; background: #cbd5e1; padding: 2px; border-radius: 4px;"></i>
+                                    <i class="ph ph-text-align-right"></i>
+                                    <i class="ph ph-text-align-justify"></i>
+                                </div>
+                            </div>
+                            <div class="ui-body-editor" style="padding: 15px;">
+                                <div class="ui-paper" style="display: flex; flex-direction: column; gap: 10px; height: 100%;">
+                                    <div style="text-align: center; font-weight: 700; font-size: 1.1rem; color: #020617; font-family: 'Space Grotesk', sans-serif;">Título en el Centro</div>
+                                    <div style="text-align: justify; font-size: 0.8rem; color: #475569; line-height: 1.5; font-family: 'Inter', sans-serif;">
+                                        Este bloque simula un texto perfectamente justificado. Como puedes notar, los extremos se acoplan a los márgenes del documento de manera recta, ofreciendo una estructura impecable, equilibrada y con excelente simetría visual.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="resumen-tema2" class="bg-dark-section">
+                <div class="container">
+                    <div class="section-header reveal">
+                        <h2>📌 Resumen de lo Aprendido</h2>
+                    </div>
+                    <div class="summary-grid reveal">
+                        <div class="summary-item">
+                            <i class="ph-fill ph-text-t"></i>
+                            <p><strong>Tipo de letra:</strong> Modifica la personalidad y apariencia visual de tus escritos.</p>
+                        </div>
+                        <div class="summary-item">
+                            <i class="ph-fill ph-text-h-one"></i>
+                            <p><strong>Tamaño:</strong> Te ayuda a estructurar y ordenar títulos y contenidos de forma clara.</p>
+                        </div>
+                        <div class="summary-item">
+                            <i class="ph-fill ph-palette"></i>
+                            <p><strong>Color:</strong> Resalta palabras clave e ideas sin sobrecargar el documento.</p>
+                        </div>
+                        <div class="summary-item">
+                            <i class="ph-fill ph-text-align-left"></i>
+                            <p><strong>Alineación:</strong> Distribuye el texto con orden y pulcritud dentro de tu página.</p>
+                        </div>
+                    </div>
+                    <p class="highlight reveal final-congratulations">🎉 ¡Perfecto! Ya estás listo para dar formato profesional a tus ideas.</p>
+                </div>
+            </section>
+
+            <section id="actividades-tema2">
+                <div class="container">
+                    <div class="section-header reveal">
+                        <h2>🧠 Actividades Cotidianas 35%</h2>
+                        <p class="section-subtitle">Realiza las siguientes prácticas en un solo documento de Word o Google Docs para consolidar tu aprendizaje.</p>
+                    </div>
+                    
+                    <div class="activities-grid reveal">
+                        <div class="activity-card glass-card act-adv">
+                            <h4><i class="ph-fill ph-note-pencil"></i> 1. Mi Nombre Creativo</h4>
+                            <ul class="step-list activity-list-spacing">
+                                <li><i class="ph-bold ph-caret-right"></i> Escribe tu nombre completo en el primer renglón.</li>
+                                <li><i class="ph-bold ph-caret-right"></i> Aplícale una tipografía distinta a la usual (ej. Times New Roman).</li>
+                                <li><i class="ph-bold ph-caret-right"></i> Aumenta su tamaño para que destaque y aplícale tu color favorito.</li>
+                            </ul>
+                        </div>
+
+                        <div class="activity-card glass-card act-adv">
+                            <h4><i class="ph-fill ph-book-open"></i> 2. Título y Contenido</h4>
+                            <ul class="step-list activity-list-spacing">
+                                <li><i class="ph-bold ph-caret-right"></i> Añade una línea que diga: <strong>"Mi materia favorita"</strong>.</li>
+                                <li><i class="ph-bold ph-caret-right"></i> Configura esa línea en tamaño grande y con alineación al <strong>Centro</strong>.</li>
+                                <li><i class="ph-bold ph-caret-right"></i> Abajo escribe el contenido con tamaño normal y alineado a la <strong>Izquierda</strong>.</li>
+                            </ul>
+                        </div>
+
+                        <div class="activity-card glass-card act-adv">
+                            <h4><i class="ph-fill ph-paint-brush-broad"></i> 3. Palabras Importantes</h4>
+                            <ul class="step-list activity-list-spacing">
+                                <li><i class="ph-bold ph-caret-right"></i> Escribe 3 oraciones cortas contando qué te gusta hacer en la escuela.</li>
+                                <li><i class="ph-bold ph-caret-right"></i> Identifica la palabra más significativa dentro de cada oración.</li>
+                                <li><i class="ph-bold ph-caret-right"></i> Cambia de color únicamente a esa palabra seleccionada en cada línea.</li>
+                            </ul>
+                        </div>
+
+                        <div class="activity-card glass-card act-adv">
+                            <h4><i class="ph-fill ph-article"></i> 4. Mini Párrafo Ordenado</h4>
+                            <ul class="step-list activity-list-spacing">
+                                <li><i class="ph-bold ph-caret-right"></i> Escribe un pequeño párrafo de 4 líneas acerca de tu familia.</li>
+                                <li><i class="ph-bold ph-caret-right"></i> Utiliza una tipografía uniforme y clara para todo el bloque.</li>
+                                <li><i class="ph-bold ph-caret-right"></i> Modifica la alineación completa del párrafo a modo <strong>Justificado</strong>.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 40px; text-align: center;" class="reveal">
+                        <div class="tip-box tip-box-blue" style="display: inline-block; text-align: left; max-width: 780px; border-radius: 12px;">
+                            <strong>📢 Indicación Importante:</strong> Desarrolla los 4 ejercicios anteriores dentro de un **mismo y único archivo** digital y súbelo al espacio correspondiente de Classroom al finalizar.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <div class="container">
+                    <div class="footer-msg reveal">
+                        🚀 No tengas miedo de probar diferentes estilos. Aprender a dar formato es como aprender a diseñar… ¡y tú puedes hacerlo increíble!
+                    </div>
+                    <div class="footer-divider"></div>
+                    <p class="footer-copyright">&copy; 2026 Educación Digital</p>
+                </div>
+            </footer>
+        </section>
+    </main>
+</div>
+    
+
+    <script src="script.js"></script> 
 </body>
 </html>
