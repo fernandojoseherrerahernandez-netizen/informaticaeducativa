@@ -70,7 +70,8 @@ h1, h2, h3, h4 {
     text-transform: uppercase;
 }
 
-.trimester-tag {
+/* Etiqueta dinámica de las Unidades en el Header */
+.unit-tag {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
     font-size: 0.85rem;
@@ -79,6 +80,7 @@ h1, h2, h3, h4 {
     display: flex;
     align-items: center;
     gap: 8px;
+    text-transform: uppercase;
 }
 
 .teacher-info {
@@ -601,4 +603,262 @@ footer {
     border: 1px solid var(--accent-cyan); /* Un borde cian muy fino */
     box-shadow: 0 0 10px rgba(6, 182, 212, 0.4); /* Un sutil brillo cian */
     display: block; /* Ayuda a la alineación vertical */
+}
+
+/* =========================================
+   Layout SPA y Barra Lateral
+   ========================================= */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    padding-top: 70px; /* Compensa el navbar fijo */
+}
+
+.sidebar {
+    width: 280px;
+    background: rgba(15, 23, 42, 0.95);
+    border-right: 1px solid var(--glass-border);
+    position: fixed;
+    top: 70px; /* Debajo del navbar */
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    z-index: 1000;
+    padding: 30px 20px;
+}
+
+.content-area {
+    flex: 1;
+    margin-left: 280px; /* Deja espacio para el sidebar fijo */
+    width: calc(100% - 280px);
+}
+
+/* Ocultar y mostrar vistas */
+.view-section {
+    display: none;
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.view-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilos de Botones de Navegación */
+.nav-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 14px 16px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    margin-bottom: 8px;
+}
+
+.nav-item:hover, .nav-item.active {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary);
+}
+
+.nav-item i {
+    font-size: 1.3rem;
+}
+
+/* Acordeón */
+.accordion-btn {
+    justify-content: space-between;
+}
+
+.caret-icon {
+    transition: transform 0.3s ease;
+    margin-left: auto;
+}
+
+.accordion.open .caret-icon {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding-left: 20px;
+}
+
+.sub-nav-item {
+    width: 100%;
+    display: block;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 10px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    border-left: 2px solid transparent;
+}
+
+.sub-nav-item:hover, .sub-nav-item.active {
+    color: var(--accent-cyan);
+    background: rgba(6, 182, 212, 0.05);
+    border-left-color: var(--accent-cyan);
+}
+
+/* Responsividad extra para pantallas pequeñas */
+@media (max-width: 900px) {
+    .sidebar { width: 220px; }
+    .content-area { margin-left: 220px; width: calc(100% - 220px); }
+}
+
+/* =========================================
+   Botón de Control del Sidebar
+   ========================================= */
+.sidebar-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.sidebar-toggle-btn:hover {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+/* =========================================
+   Estados de Transición (Sidebar Colapsable)
+   ========================================= */
+/* Asegúrate de aplicar estas transiciones a tus selectores del sidebar y contenido */
+.sidebar {
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.content-area {
+    transition: margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Cuando el cuerpo tiene la clase activa, ocultamos el menú */
+body.sidebar-collapsed .sidebar {
+    transform: translateX(-100%); /* Desplaza el menú fuera de la pantalla */
+}
+
+body.sidebar-collapsed .content-area {
+    margin-left: 0;
+    width: 100%; /* El contenido toma todo el espacio disponible */
+}
+
+/* Oculta todas las secciones por defecto */
+.view-section {
+    display: none;
+}
+
+/* Solo muestra la sección que tiene la clase active */
+.view-section.active {
+    display: block;
+}
+
+/* En tu styles.css */
+.reveal {
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* =========================================================
+   ESTILOS PARA ACORDEONES ANIDADOS (UNIDADES -> TEMAS)
+   ========================================================= */
+
+.nested-accordion {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Botón de la Unidad */
+.nested-accordion-btn {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center;
+    width: 100%;
+}
+
+.nested-accordion-btn .btn-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nested-caret {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+/* Estado abierto de la Unidad */
+.nested-accordion.open .nested-caret {
+    transform: rotate(180deg);
+    color: var(--accent-cyan);
+}
+
+.nested-accordion.open .nested-accordion-btn {
+    color: var(--text-main);
+}
+
+/* Contenedor de Temas */
+.nested-accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: rgba(0, 0, 0, 0.15); /* Sombra interna para dar profundidad */
+}
+
+/* Estilo individual de los Temas (Jerarquía) */
+.theme-item {
+    padding-left: 52px !important; /* Indentación extra */
+    font-size: 0.85rem !important; /* Ligeramente más pequeños */
+    position: relative;
+    border-left: 2px solid transparent;
+}
+
+/* Viñeta decorativa para los temas */
+.theme-item::before {
+    content: "";
+    position: absolute;
+    left: 36px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--text-muted);
+    transition: all 0.3s ease;
+}
+
+.theme-item:hover::before,
+.theme-item.active::before {
+    background-color: var(--accent-cyan);
+    transform: translateY(-50%) scale(1.5);
 }
