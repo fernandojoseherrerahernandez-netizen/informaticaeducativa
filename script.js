@@ -1,126 +1,247 @@
-document.addEventListener("DOMContentLoaded", function() {
+/**
+ * @file script.js
+ * @description Lógica central de la Plataforma Educativa (SPA).
+ * Gestiona el enrutamiento por hash, animaciones al hacer scroll y la interactividad de la barra lateral.
+ * @author Fernando Herrera
+ */
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Inicialización centralizada de todos los módulos de la aplicación
+    App.init();
+});
+
+/**
+ * Espacio de nombres principal de la aplicación para evitar contaminar el ámbito global.
+ */
+const App = {
+    init() {
+        this.initAnimations();
+        this.initAccordionMenu();
+        this.initSidebarToggle();
+        this.initRouter();
+    },
+
+    /* =======================================================================
+       1. MÓDULO DE ANIMACIONES (Intersection Observer)
+       ======================================================================= */
     
-    /* ---------------------------------------------------\
-       1. Animaciones de Revelación (Intersection Observer)
-       --------------------------------------------------- */
-    const revealOptions = {
-        threshold: 0.15,
-        rootMargin: "0px 0px -50px 0px"
-    };
+    /**
+     * Inicializa el observador para revelar elementos a medida que entran en la vista.
+     */
+    initAnimations() {
+        const revealOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
 
-    const revealOnScroll = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add('active');
-        });
-    }, revealOptions);
+        // Guardamos el observador globalmente en App para poder usarlo en el Router
+        this.revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('active');
+            });
+        }, revealOptions);
 
-    function initRevealAnimations() {
+        this.observeElements();
+    },
+
+    /**
+     * Busca todos los elementos con la clase '.reveal' y los suscribe al observador.
+     */
+    observeElements() {
         const revealElements = document.querySelectorAll('.reveal');
         revealElements.forEach(el => {
-            revealOnScroll.observe(el);
+            this.revealObserver.observe(el);
         });
-    }
+    },
 
-    initRevealAnimations();
+    /* =======================================================================
+       2. MÓDULO DE NAVEGACIÓN Y MENÚ ACORDEÓN
+       ======================================================================= */
+    
+    /**
+     * Configura los eventos de clic para los menús desplegables (Grados y Unidades).
+     */
+    initAccordionMenu() {
+        // A. Acordeón Principal (Grados)
+        const accordionBtn = document.querySelector('.accordion-btn');
+        const accordionContainer = document.querySelector('.accordion');
+        const accordionContent = document.querySelector('.accordion-content');
 
-
-    /* ---------------------------------------------------\
-       2. Menú Desplegable (Acordeones Anidados)
-       --------------------------------------------------- */
-    const accordionBtn = document.querySelector('.accordion-btn');
-    const accordionContent = document.querySelector('.accordion-content');
-    const accordionContainer = document.querySelector('.accordion');
-
-    if (accordionBtn && accordionContent && accordionContainer) {
-        accordionBtn.addEventListener('click', function() {
-            accordionContainer.classList.toggle('active');
-            if (accordionContainer.classList.contains('active')) {
-                accordionContent.style.maxHeight = accordionContent.scrollHeight + "px";
-            } else {
-                accordionContent.style.maxHeight = null;
-                document.querySelectorAll('.nested-accordion').forEach(nested => {
-                    nested.classList.remove('active');
-                    const content = nested.querySelector('.nested-accordion-content');
-                    if (content) content.style.maxHeight = null;
-                });
-            }
-        });
-    }
-
-    document.querySelectorAll('.nested-accordion-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const parent = this.parentElement;
-            const content = this.nextElementSibling;
-            
-            parent.classList.toggle('active');
-            
-            if (parent.classList.contains('active')) {
-                content.style.maxHeight = content.scrollHeight + "px";
-                if (accordionContent) {
-                    accordionContent.style.maxHeight = (accordionContent.scrollHeight + content.scrollHeight) + "px";
+        if (accordionBtn && accordionContent && accordionContainer) {
+            accordionBtn.addEventListener('click', () => {
+                const isActive = accordionContainer.classList.toggle('active');
+                
+                if (isActive) {
+                    accordionContent.style.maxHeight = `${accordionContent.scrollHeight}px`;
+                } else {
+                    accordionContent.style.maxHeight = null;
+                    this.closeAllNestedAccordions();
                 }
-            } else {
-                content.style.maxHeight = null;
-            }
+            });
+        }
+
+        // B. Sub-acordeones (Unidades)
+        const nestedBtns = document.querySelectorAll('.nested-accordion-btn');
+        nestedBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Evita que el clic cierre el acordeón padre
+                
+                const parent = btn.parentElement;
+                const content = btn.nextElementSibling;
+                const isActive = parent.classList.toggle('active');
+                
+                if (isActive) {
+                    content.style.maxHeight = `${content.scrollHeight}px`;
+                    // Ajustamos dinámicamente la altura del padre para que no corte el contenido
+                    if (accordionContent) {
+                        accordionContent.style.maxHeight = `${accordionContent.scrollHeight + content.scrollHeight}px`;
+                    }
+                } else {
+                    content.style.maxHeight = null;
+                }
+            });
         });
-    });
+    },
 
+    /**
+     * Función auxiliar para cerrar todos los sub-menús cuando se cierra el menú principal.
+     */
+    closeAllNestedAccordions() {
+        document.querySelectorAll('.nested-accordion').forEach(nested => {
+            nested.classList.remove('active');
+            const content = nested.querySelector('.nested-accordion-content');
+            if (content) content.style.maxHeight = null;
+        });
+    },
 
-    /* ---------------------------------------------------\
-       3. Sistema de Rutas por URL Hash (Deep Linking SPA)
-       --------------------------------------------------- */
-    const navItems = document.querySelectorAll('.nav-item, .sub-nav-item, .theme-item');
-    const views = document.querySelectorAll('.view-section');
-    const headerTeacher = document.getElementById('header-teacher-info');
-    const headerUnit = document.getElementById('header-unit-info');
-    const unitText = document.getElementById('unit-text');
-
-    function switchView(targetId) {
-        // Si no hay id en la URL, por defecto va al inicio
-        if (!targetId) targetId = 'view-inicio';
-
-        // A. Activar la sección física en pantalla
-        views.forEach(view => view.classList.remove('active'));
-        const targetView = document.getElementById(targetId);
+    /**
+     * Configura el botón para colapsar/expandir la barra lateral en dispositivos móviles/tablets.
+     */
+    initSidebarToggle() {
+        const toggleSidebarBtn = document.getElementById('toggle-sidebar');
         
+        // Autocolapsar en pantallas menores a 900px al cargar
+        if (window.innerWidth <= 900) {
+            document.body.classList.add('sidebar-collapsed');
+        }
+
+        if (toggleSidebarBtn) {
+            toggleSidebarBtn.addEventListener('click', () => {
+                document.body.classList.toggle('sidebar-collapsed');
+                const icon = toggleSidebarBtn.querySelector('i');
+                
+                if (icon) {
+                    const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+                    icon.className = isCollapsed ? 'ph-bold ph-caret-right' : 'ph-bold ph-list';
+                }
+            });
+        }
+    },
+
+    /* =======================================================================
+       3. MÓDULO DE ENRUTAMIENTO (SPA HASH ROUTER)
+       ======================================================================= */
+    
+    /**
+     * Inicializa el sistema de rutas observando los cambios de Hash en la URL.
+     */
+    initRouter() {
+        const navItems = document.querySelectorAll('.nav-item, .sub-nav-item, .theme-item');
+        
+        // Actualiza el Hash cuando se hace clic en un elemento del menú
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                const targetId = item.getAttribute('data-target');
+                if (targetId) window.location.hash = targetId;
+            });
+        });
+
+        // Escucha el evento nativo del navegador para el cambio de URL
+        window.addEventListener('hashchange', () => {
+            const currentHash = window.location.hash.substring(1);
+            this.switchView(currentHash);
+        });
+
+        // Ejecuta la ruta inicial al cargar la página por primera vez
+        const initialHash = window.location.hash.substring(1);
+        this.switchView(initialHash);
+    },
+
+    /**
+     * Cambia la vista activa de la aplicación, actualiza la UI y fuerza las animaciones.
+     * @param {string} targetId - El ID de la vista a mostrar (ej. 'view-u3-t1')
+     */
+    switchView(targetId) {
+        if (!targetId) targetId = 'view-inicio'; // Ruta por defecto
+
+        this.updateVisibleSection(targetId);
+        this.updateActiveMenuState(targetId);
+        this.updateDynamicHeader(targetId);
+    },
+
+    /**
+     * Oculta todas las secciones y muestra solo la sección objetivo.
+     * @param {string} targetId 
+     */
+    updateVisibleSection(targetId) {
+        const views = document.querySelectorAll('.view-section');
+        views.forEach(view => view.classList.remove('active'));
+        
+        const targetView = document.getElementById(targetId);
         if (targetView) {
             targetView.classList.add('active');
             
-            // Forzar activación instantánea de las animaciones visuales
+            // Forzamos las animaciones para que los elementos aparezcan de inmediato sin hacer scroll
             const elements = targetView.querySelectorAll('.reveal');
             elements.forEach(el => {
                 el.classList.add('active');
-                revealOnScroll.unobserve(el); 
+                if (this.revealObserver) this.revealObserver.unobserve(el); 
             });
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+    },
 
-        // B. Actualizar visualmente el menú lateral y desplegar contenedores si es necesario
+    /**
+     * Expande dinámicamente los menús necesarios para reflejar dónde está el usuario.
+     * @param {string} targetId 
+     */
+    updateActiveMenuState(targetId) {
+        const navItems = document.querySelectorAll('.nav-item, .sub-nav-item, .theme-item');
         navItems.forEach(item => item.classList.remove('active'));
-        const activeBtn = document.querySelector(`[data-target="${targetId}"]`);
         
+        const activeBtn = document.querySelector(`[data-target="${targetId}"]`);
         if (activeBtn) {
             activeBtn.classList.add('active');
             
-            // Si es un tema dentro de una unidad, expande el sub-acordeón automáticamente
+            // Expande la Unidad correspondiente
             const nestedAccordion = activeBtn.closest('.nested-accordion');
             if (nestedAccordion) {
                 nestedAccordion.classList.add('active');
                 const nestedContent = nestedAccordion.querySelector('.nested-accordion-content');
-                if (nestedContent) nestedContent.style.maxHeight = nestedContent.scrollHeight + "px";
+                if (nestedContent) nestedContent.style.maxHeight = `${nestedContent.scrollHeight}px`;
             }
             
-            // También expande el acordeón principal de Grados
+            // Expande el Grado correspondiente
+            const accordionContainer = document.querySelector('.accordion');
+            const accordionContent = document.querySelector('.accordion-content');
             if (accordionContainer && accordionContent) {
                 accordionContainer.classList.add('active');
-                accordionContent.style.maxHeight = accordionContent.scrollHeight + "px";
+                accordionContent.style.maxHeight = `${accordionContent.scrollHeight}px`;
             }
         }
+    },
 
-        // C. Cambiar dinámicamente las etiquetas del Navbar superior
+    /**
+     * Actualiza la barra de navegación superior (Perfil del docente vs Etiqueta de Unidad).
+     * @param {string} targetId 
+     */
+    updateDynamicHeader(targetId) {
+        const headerTeacher = document.getElementById('header-teacher-info');
+        const headerUnit = document.getElementById('header-unit-info');
+        const unitText = document.getElementById('unit-text');
+
         if (targetId === 'view-inicio') {
             if (headerTeacher) headerTeacher.style.display = 'flex';
             if (headerUnit) headerUnit.style.display = 'none';
@@ -129,47 +250,11 @@ document.addEventListener("DOMContentLoaded", function() {
             if (headerUnit) {
                 headerUnit.style.display = 'flex';
                 if (unitText) {
-                    // Detecta automáticamente el número de unidad mediante el ID (ej: view-u3-t1 -> UNIDAD 3)
+                    // Extrae el número de la unidad usando Expresiones Regulares (Regex)
                     const match = targetId.match(/u(\d+)/);
                     unitText.textContent = match ? `UNIDAD ${match[1]}` : "CONTENIDO";
                 }
             }
         }
     }
-
-    // Al hacer clic en el menú, en lugar de cambiar la vista directamente, cambiamos el hash de la URL
-    navItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('data-target');
-            if (targetId) {
-                window.location.hash = targetId;
-            }
-        });
-    });
-
-    // Detectar cuando cambia el Hash (por ejemplo, si el usuario navega atrás/adelante)
-    window.addEventListener('hashchange', function() {
-        const currentHash = window.location.hash.substring(1);
-        switchView(currentHash);
-    });
-
-    // Carga Inicial: Lee la URL al abrir el sitio por primera vez para ver si trae un enlace compartido
-    const initialHash = window.location.hash.substring(1);
-    switchView(initialHash);
-
-
-    /* ---------------------------------------------------\
-       4. Control de la Barra Lateral (Sidebar Toggle)
-       --------------------------------------------------- */
-    const toggleSidebarBtn = document.getElementById('toggle-sidebar');
-    if (window.innerWidth <= 900) document.body.classList.add('sidebar-collapsed');
-
-    if (toggleSidebarBtn) {
-        toggleSidebarBtn.addEventListener('click', function() {
-            document.body.classList.toggle('sidebar-collapsed');
-            const icon = toggleSidebarBtn.querySelector('i');
-            if (icon) icon.className = document.body.classList.contains('sidebar-collapsed') 
-                ? 'ph-bold ph-caret-right' : 'ph-bold ph-list';
-        });
-    }
-});
+};
