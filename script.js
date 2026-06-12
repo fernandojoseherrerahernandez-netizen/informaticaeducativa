@@ -63,25 +63,28 @@ const App = {
      * Configura los eventos de clic para los menús desplegables (Grados y Unidades).
      */
     initAccordionMenu() {
-        // A. Acordeón Principal (Grados)
-        const accordionBtn = document.querySelector('.accordion-btn');
-        const accordionContainer = document.querySelector('.accordion');
-        const accordionContent = document.querySelector('.accordion-content');
+        // A. Acordeón Principal (Grados) - Soporte Multi-Grado Optimizado
+        const accordionContainers = document.querySelectorAll('.accordion');
 
-        if (accordionBtn && accordionContent && accordionContainer) {
-            accordionBtn.addEventListener('click', () => {
-                const isActive = accordionContainer.classList.toggle('active');
-                
-                if (isActive) {
-                    accordionContent.style.maxHeight = `${accordionContent.scrollHeight}px`;
-                } else {
-                    accordionContent.style.maxHeight = null;
-                    this.closeAllNestedAccordions();
-                }
-            });
-        }
+        accordionContainers.forEach(container => {
+            const accordionBtn = container.querySelector('.accordion-btn');
+            const accordionContent = container.querySelector('.accordion-content');
 
-        // B. Sub-acordeones (Unidades)
+            if (accordionBtn && accordionContent) {
+                accordionBtn.addEventListener('click', () => {
+                    const isActive = container.classList.toggle('active');
+                    
+                    if (isActive) {
+                        accordionContent.style.maxHeight = `${accordionContent.scrollHeight}px`;
+                    } else {
+                        accordionContent.style.maxHeight = null;
+                        this.closeAllNestedAccordions();
+                    }
+                });
+            }
+        });
+
+        // B. Sub-acordeones (Unidades) - Corregido y Adaptado de forma dinámica
         const nestedBtns = document.querySelectorAll('.nested-accordion-btn');
         nestedBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -91,13 +94,19 @@ const App = {
                 const content = btn.nextElementSibling;
                 const isActive = parent.classList.toggle('active');
                 
+                // Buscamos dinámicamente el contenedor de grado correspondiente para ajustar su altura real
+                const mainAccordionContent = btn.closest('.accordion-content');
+                
                 if (isActive) {
                     content.style.maxHeight = `${content.scrollHeight}px`;
                     // Ajustamos dinámicamente la altura del padre para que no corte el contenido
-                    if (accordionContent) {
-                        accordionContent.style.maxHeight = `${accordionContent.scrollHeight + content.scrollHeight}px`;
+                    if (mainAccordionContent) {
+                        mainAccordionContent.style.maxHeight = `${mainAccordionContent.scrollHeight + content.scrollHeight}px`;
                     }
                 } else {
+                    if (mainAccordionContent) {
+                        mainAccordionContent.style.maxHeight = `${mainAccordionContent.scrollHeight - content.scrollHeight}px`;
+                    }
                     content.style.maxHeight = null;
                 }
             });
@@ -223,12 +232,14 @@ const App = {
                 if (nestedContent) nestedContent.style.maxHeight = `${nestedContent.scrollHeight}px`;
             }
             
-            // Expande el Grado correspondiente
-            const accordionContainer = document.querySelector('.accordion');
-            const accordionContent = document.querySelector('.accordion-content');
-            if (accordionContainer && accordionContent) {
+            // Expande el Grado correspondiente de manera dinámica utilizando la ubicación del botón activo
+            const accordionContainer = activeBtn.closest('.accordion');
+            if (accordionContainer) {
                 accordionContainer.classList.add('active');
-                accordionContent.style.maxHeight = `${accordionContent.scrollHeight}px`;
+                const accordionContent = accordionContainer.querySelector('.accordion-content');
+                if (accordionContent) {
+                    accordionContent.style.maxHeight = `${accordionContent.scrollHeight}px`;
+                }
             }
         }
     },
